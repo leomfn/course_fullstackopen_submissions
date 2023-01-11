@@ -25,12 +25,15 @@ const App = () => {
   const [bad, setBad] = useState(0)
 
   const giveFeedback = (rating) => () => {
-    if (rating === 'good') {
-      setGood(good + 1)
-    } else if (rating === 'neutral') {
-      setNeutral(neutral + 1)
-    } else {
-      setBad(bad + 1)
+    switch (rating) {
+      case 'good':
+        setGood(good + 1)
+        break
+      case 'neutral':
+        setNeutral(neutral + 1)
+        break
+      default:
+        setBad(bad + 1)
     }
   }
 
@@ -41,7 +44,7 @@ const App = () => {
       <Button text='neutral' eventHandler={giveFeedback('neutral')} />
       <Button text='bad' eventHandler={giveFeedback('bad')} />
       <h1>statistics</h1>
-      <Statistics props={{good: good, neutral: neutral, bad: bad}} />
+      <Statistics props={{ good: good, neutral: neutral, bad: bad }} />
     </div>
   )
 }
