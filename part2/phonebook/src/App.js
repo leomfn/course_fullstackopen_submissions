@@ -22,7 +22,11 @@ const App = () => {
 
   const submitHandler = (event) => {
     event.preventDefault()
-    setPersons(persons.concat({ name: newName }))
+    if (persons.map(person => person.name).includes(newName)) {
+      alert(`${newName} already exists in phonebook`)
+    } else {
+      setPersons(persons.concat({ name: newName }))
+    }
     setNewName('')
   }
 
