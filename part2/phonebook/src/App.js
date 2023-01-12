@@ -3,7 +3,7 @@ import { useState } from 'react'
 const AddressList = (props) => {
   return (
     <li key={props.name} >
-      {props.name}
+      {props.name} {props.number}
     </li>
   )
 }
@@ -14,10 +14,14 @@ const App = () => {
     { name: 'Arto Hellas' }
   ])
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
 
   // event handler functions
   const nameInputHandler = (event) => {
     setNewName(event.target.value)
+  }
+  const numberInputHandler = (event) => {
+    setNewNumber(event.target.value)
   }
 
   const submitHandler = (event) => {
@@ -25,9 +29,14 @@ const App = () => {
     if (persons.map(person => person.name).includes(newName)) {
       alert(`${newName} already exists in phonebook`)
     } else {
-      setPersons(persons.concat({ name: newName }))
+      const newPerson = {
+        name: newName,
+        number: newNumber
+      }
+      setPersons(persons.concat(newPerson))
     }
     setNewName('')
+    setNewNumber('')
   }
 
   return (
@@ -36,6 +45,9 @@ const App = () => {
       <form onSubmit={submitHandler}>
         <div>
           name: <input onChange={nameInputHandler} value={newName} />
+        </div>
+        <div>
+          number: <input onChange={numberInputHandler} value={newNumber} />
         </div>
         <div>
           <button type="submit">add</button>
