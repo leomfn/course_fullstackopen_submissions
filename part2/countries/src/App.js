@@ -7,7 +7,7 @@ const Countries = (props) => {
       <div>
         {props.countryArray.map((country) => {
           return (
-            <li key={country.cioc}>
+            <li key={country.ccn3}>
               {country.name.common}
             </li>
           )
@@ -27,7 +27,6 @@ const Countries = (props) => {
 const App = () => {
   // state hooks
   const [countries, setCountries] = useState([])
-  const [searchString, setSearchString] = useState('')
   const [displayCountries, setDisplayCountries] = useState([])
 
   // event hooks
@@ -46,21 +45,20 @@ const App = () => {
 
   // event handlers
   const searchHandler = (event) => {
-    setSearchString(event.target.value)
+    const searchString = event.target.value
+    const countriesFiltered = searchString === ''
+      ? [...countries]
+      : countries.filter((country) => country.name.common.toLowerCase().includes(searchString.toLowerCase()))
+    setDisplayCountries(countriesFiltered)
   }
-
-  // other
-  const countriesFiltered = searchString === ''
-    ? [...countries]
-    : countries.filter((country) => country.name.common.toLowerCase().includes(searchString.toLowerCase()))
 
   return (
     <>
       <div>
-        find countries <input value={searchString} onChange={searchHandler} />
+        find countries <input onChange={searchHandler} />
       </div>
       <Countries countryArray={
-        countries.length == countriesFiltered.length ? [] : countriesFiltered
+        countries.length === displayCountries.length ? [] : displayCountries
       } />
     </>
   )
