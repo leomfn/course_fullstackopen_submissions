@@ -2,12 +2,35 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 
 const Countries = (props) => {
-  if (props.countryArray.length <= 10) {
+  if (props.countryArray.length === 1) {
+    const country = props.countryArray[0]
+    return (
+      <div>
+        <h1>{country.name.common}</h1>
+        <div>
+          capital {country.capital[0]}
+        </div>
+        <div>
+          area {country.area}
+        </div>
+        <h2>languages:</h2>
+        <ul>
+          {Object.values(country.languages).map((language) => {
+              return (
+                <li key={language}>{language}</li>
+              )
+            })}
+          
+        </ul>
+        <img src={country.flags.svg} alt='country flag' height='200px' />
+      </div>
+    )
+  } else if (props.countryArray.length <= 10) {
     return (
       <div>
         {props.countryArray.map((country) => {
           return (
-            <li key={country.ccn3}>
+            <li key={country.name.common}>
               {country.name.common}
             </li>
           )
@@ -53,14 +76,14 @@ const App = () => {
   }
 
   return (
-    <>
+    <div>
       <div>
         find countries <input onChange={searchHandler} />
       </div>
       <Countries countryArray={
         countries.length === displayCountries.length ? [] : displayCountries
       } />
-    </>
+    </div>
   )
 }
 
