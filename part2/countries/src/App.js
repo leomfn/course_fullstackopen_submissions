@@ -1,38 +1,60 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 
-const Countries = (props) => {
-  if (props.countryArray.length === 1) {
-    const country = props.countryArray[0]
-    return (
+const CountryInfo = ({ country }) => {
+  return (
+    <div>
+      <h1>{country.name.common}</h1>
       <div>
-        <h1>{country.name.common}</h1>
-        <div>
-          capital {country.capital[0]}
-        </div>
-        <div>
-          area {country.area}
-        </div>
-        <h2>languages:</h2>
-        <ul>
-          {Object.values(country.languages).map((language) => {
-              return (
-                <li key={language}>{language}</li>
-              )
-            })}
-          
-        </ul>
-        <img src={country.flags.svg} alt='country flag' height='200px' />
+        capital {country.capital[0]}
       </div>
+      <div>
+        area {country.area}
+      </div>
+      <h2>languages:</h2>
+      <ul>
+        {Object.values(country.languages).map((language) => {
+          return (
+            <li key={language}>{language}</li>
+          )
+        })}
+
+      </ul>
+      <img src={country.flags.svg} alt='country flag' height='200px' />
+    </div>
+  )
+}
+
+const CountrySelection = ({ country }) => {
+  // state hooks
+  const [showInfo, setShowInfo] = useState(false)
+
+  // event handlers
+  const buttonHandler = () => {
+    setShowInfo(!showInfo)
+  }
+
+  return (
+    <div key={country.name.common}>
+      {country.name.common}
+      <button onClick={buttonHandler}>{showInfo ? 'hide' : 'show'}</button>
+      {showInfo ? <CountryInfo country={country} /> : <></>}
+    </div>
+  )
+}
+
+const Countries = ({ countryArray }) => {
+  if (countryArray.length === 1) {
+    const country = countryArray[0]
+    return (
+      <CountryInfo country={country} />
     )
-  } else if (props.countryArray.length <= 10) {
+  } else if (countryArray.length <= 10) {
     return (
       <div>
-        {props.countryArray.map((country) => {
+        {countryArray.map((country) => {
           return (
-            <li key={country.name.common}>
-              {country.name.common}
-            </li>
+            <CountrySelection country={country} />
           )
         })}
       </div>
@@ -59,7 +81,6 @@ const App = () => {
         .get('https://restcountries.com/v3.1/all')
         .then(
           response => {
-            console.log(response.status)
             setCountries(response.data)
           }
         )
