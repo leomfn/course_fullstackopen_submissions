@@ -28,25 +28,6 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
-  const submitHandler = (event) => {
-    event.preventDefault()
-    if (persons.map(person => person.name).includes(newName)) {
-      alert(`${newName} already exists in phonebook`)
-    } else {
-      const newPerson = {
-        name: newName,
-        number: newNumber
-      }
-      personService
-        .create(newPerson)
-        .then(returnedEntry => {
-          setPersons(persons.concat(returnedEntry))
-        })
-    }
-    setNewName('')
-    setNewNumber('')
-  }
-
   const filterPhonebookHandler = (event) => {
     setFilterString(event.target.value)
   }
@@ -62,11 +43,14 @@ const App = () => {
       <Filter inputHandler={filterPhonebookHandler} />
       <h3>Add a new</h3>
       <PersonForm
-        submitHandler={submitHandler}
+        persons={persons}
         nameInputHandler={nameInputHandler}
         numberInputHandler={numberInputHandler}
         newName={newName}
         newNumber={newNumber}
+        setNewName={setNewName}
+        setNewNumber={setNewNumber}
+        setPersons={setPersons}
       />
       <h3>Numbers</h3>
       <Persons
