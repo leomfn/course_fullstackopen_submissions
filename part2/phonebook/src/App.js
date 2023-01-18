@@ -69,7 +69,11 @@ const App = () => {
         newNumber={newNumber}
       />
       <h3>Numbers</h3>
-      <Persons personsArray={personsFiltered} />
+      <Persons
+        personsArray={personsFiltered}
+        persons={persons}
+        setPersons={setPersons}
+      />
     </div>
   )
 }
