@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import axios from 'axios'
+import personService from './services/persons'
 
 const App = () => {
   // state hookes
@@ -13,10 +13,10 @@ const App = () => {
 
   // event hooks
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => setPersons(response.data)
-      )},
+    personService
+      .getAll()
+      .then(phoneBookData => setPersons(phoneBookData))
+  },
     []
   )
 
@@ -37,7 +37,11 @@ const App = () => {
         name: newName,
         number: newNumber
       }
-      setPersons(persons.concat(newPerson))
+      personService
+        .create(newPerson)
+        .then(returnedEntry => {
+          setPersons(persons.concat(returnedEntry))
+        })
     }
     setNewName('')
     setNewNumber('')
