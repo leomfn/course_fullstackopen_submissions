@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 import personService from './services/persons'
 
 const App = () => {
@@ -10,6 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterString, setFilterString] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState(null)
 
   // event hooks
   useEffect(() => {
@@ -40,6 +42,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationMessage} />
       <Filter inputHandler={filterPhonebookHandler} />
       <h3>Add a new</h3>
       <PersonForm
@@ -51,6 +54,7 @@ const App = () => {
         setNewName={setNewName}
         setNewNumber={setNewNumber}
         setPersons={setPersons}
+        setNotificationMessage={setNotificationMessage}
       />
       <h3>Numbers</h3>
       <Persons
