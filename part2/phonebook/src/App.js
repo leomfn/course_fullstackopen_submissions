@@ -12,15 +12,16 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filterString, setFilterString] = useState('')
   const [notificationMessage, setNotificationMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
-  // event hooks
-  useEffect(() => {
-    personService
-      .getAll()
-      .then(phoneBookData => setPersons(phoneBookData))
-  },
-    []
-  )
+    // event hooks
+    useEffect(() => {
+      personService
+        .getAll()
+        .then(phoneBookData => setPersons(phoneBookData))
+    },
+      []
+    )
 
   // event handler functions
   const nameInputHandler = (event) => {
@@ -42,7 +43,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notificationMessage} />
+      <Notification message={notificationMessage} type='notification' />
+      <Notification message={errorMessage} type='error' />
       <Filter inputHandler={filterPhonebookHandler} />
       <h3>Add a new</h3>
       <PersonForm
@@ -55,6 +57,7 @@ const App = () => {
         setNewNumber={setNewNumber}
         setPersons={setPersons}
         setNotificationMessage={setNotificationMessage}
+        setErrorMessage={setErrorMessage}
       />
       <h3>Numbers</h3>
       <Persons

@@ -1,7 +1,7 @@
-const Notification = ({ message }) => {
+const Notification = ({ message, type }) => {
     const notificationStyle = {
         fontSize: '20px',
-        color: 'green',
+        color: type === 'notification' ? 'green' : 'red',
         background: 'lightgrey',
         borderStyle: 'solid',
         borderRadius: '5px',

@@ -4,7 +4,7 @@ const PersonForm = ({
     persons,
     nameInputHandler, numberInputHandler,
     newName, newNumber,
-    setPersons, setNewName, setNewNumber, setNotificationMessage
+    setPersons, setNewName, setNewNumber, setNotificationMessage, setErrorMessage
 }) => {
 
     const submitHandler = (event) => {
@@ -15,7 +15,15 @@ const PersonForm = ({
             if (window.confirm(`${updatePerson.name} is already added to phonebook, replace the old number with a new one?`)) {
                 personService
                     .update(updatePerson.id, updatePerson)
-                setPersons(persons.map((p => p.id !== updatePerson.id ? p : updatePerson)))
+                    .then(setPersons(persons.map((p => p.id !== updatePerson.id ? p : updatePerson))))
+                    .catch(error => {
+                        setErrorMessage(`Information of ${newName} has already been removed from server`)
+                        setTimeout(() => {
+                            setErrorMessage(null)
+                        }, 5000)
+                        setPersons(persons.filter(p => p.id !== updatePerson.id))
+                    })
+                
             }
         } else {
             const newPerson = {
