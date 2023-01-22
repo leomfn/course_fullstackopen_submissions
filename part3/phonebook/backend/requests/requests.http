@@ -1,17 +1,17 @@
-GET http://localhost:3001/api/persons
+GET https://phonebook-backend-38ih.onrender.com/api/persons
 
 ###
 
-GET http://localhost:3001/info
+GET https://phonebook-backend-38ih.onrender.com/info
 
 ###
-GET http://localhost:3001/api/persons/1
+GET https://phonebook-backend-38ih.onrender.com/api/persons/1
 
 ###
-GET http://localhost:3001/api/persons/8
+GET https://phonebook-backend-38ih.onrender.com/api/persons/8
 
 ###
-POST http://localhost:3001/api/persons
+POST https://phonebook-backend-38ih.onrender.com/api/persons
 Content-Type: application/json
 
 {
@@ -20,7 +20,7 @@ Content-Type: application/json
 }
 
 ### 
-POST http://localhost:3001/api/persons
+POST https://phonebook-backend-38ih.onrender.com/api/persons
 Content-Type: application/json
 
 {
@@ -29,11 +29,11 @@ Content-Type: application/json
 }
 
 ### no content
-POST http://localhost:3001/api/persons
+POST https://phonebook-backend-38ih.onrender.com/api/persons
 Content-Type: application/json
 
 ### name missing
-POST http://localhost:3001/api/persons
+POST https://phonebook-backend-38ih.onrender.com/api/persons
 Content-Type: application/json
 
 {
@@ -41,7 +41,7 @@ Content-Type: application/json
 }
 
 ### number missing
-POST http://localhost:3001/api/persons
+POST https://phonebook-backend-38ih.onrender.com/api/persons
 Content-Type: application/json
 
 {
@@ -49,7 +49,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3001/api/persons/1
+DELETE https://phonebook-backend-38ih.onrender.com/api/persons/1
 
 ###
-DELETE http://localhost:3001/api/persons/8
+DELETE https://phonebook-backend-38ih.onrender.com/api/persons/8
