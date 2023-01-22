@@ -62,3 +62,12 @@ DELETE http://localhost:3001/api/persons/63cd8f603540050b9990d359
 
 ###
 DELETE http://localhost:3001/api/persons/8
+
+###
+PUT http://localhost:3001/api/persons/63cdc8b77d853c228556c629
+Content-Type: application/json
+
+{
+    "name": "Changed Name via Put",
+    "number": "123-also-changed"
+}

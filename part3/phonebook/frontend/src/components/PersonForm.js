@@ -9,23 +9,23 @@ const PersonForm = ({
 
     const submitHandler = (event) => {
         event.preventDefault()
-        // if (persons.map(person => person.name).includes(newName)) {
+        if (persons.map(person => person.name).includes(newName)) {
 
-        //     const updatePerson = { ...persons.find((p) => p.name === newName), number: newNumber }
-        //     if (window.confirm(`${updatePerson.name} is already added to phonebook, replace the old number with a new one?`)) {
-        //         personService
-        //             .update(updatePerson.id, updatePerson)
-        //             .then(setPersons(persons.map((p => p.id !== updatePerson.id ? p : updatePerson))))
-        //             .catch(error => {
-        //                 setErrorMessage(`Information of ${newName} has already been removed from server`)
-        //                 setTimeout(() => {
-        //                     setErrorMessage(null)
-        //                 }, 5000)
-        //                 setPersons(persons.filter(p => p.id !== updatePerson.id))
-        //             })
+            const updatePerson = { ...persons.find((p) => p.name === newName), number: newNumber }
+            if (window.confirm(`${updatePerson.name} is already added to phonebook, replace the old number with a new one?`)) {
+                personService
+                    .update(updatePerson.id, updatePerson)
+                    .then(setPersons(persons.map((p => p.id !== updatePerson.id ? p : updatePerson))))
+                    .catch(error => {
+                        setErrorMessage(`Information of ${newName} has already been removed from server`)
+                        setTimeout(() => {
+                            setErrorMessage(null)
+                        }, 5000)
+                        setPersons(persons.filter(p => p.id !== updatePerson.id))
+                    })
 
-        //     }
-        // } else {
+            }
+        } else {
         const newPerson = {
             name: newName,
             number: newNumber
@@ -42,7 +42,7 @@ const PersonForm = ({
                         setNotificationMessage(null)
                     }, 5000)
                 })
-        // }
+        }
         setNewName('')
         setNewNumber('')
     }
