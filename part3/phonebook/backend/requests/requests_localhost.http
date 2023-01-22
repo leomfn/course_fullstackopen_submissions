@@ -28,6 +28,15 @@ Content-Type: application/json
     "number": "123-456-987"
 }
 
+### 
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Jane Doe",
+    "number": "00-11-22-33"
+}
+
 ### no content
 POST http://localhost:3001/api/persons
 Content-Type: application/json
