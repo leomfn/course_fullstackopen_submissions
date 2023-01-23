@@ -14,14 +14,16 @@ const PersonForm = ({
             if (window.confirm(`${updatePerson.name} is already added to phonebook, replace the old number with a new one?`)) {
                 personService
                     .update(updatePerson.id, updatePerson)
-                    .then(setPersons(persons.map((p => p.id !== updatePerson.id ? p : updatePerson))))
+                    .then(returnedPerson => {
+                        setPersons(persons.map(p => p.id !== updatePerson.id ? p : returnedPerson))
+                    })
                     .catch(error => {
                         // setErrorMessage(`Information of ${newName} has already been removed from server`)
                         setErrorMessage(error.response.data.error)
                         setTimeout(() => {
                             setErrorMessage(null)
                         }, 5000)
-                        setPersons(persons.filter(p => p.id !== updatePerson.id))
+                        // setPersons(persons.filter(p => p.id !== updatePerson.id))
                     })
             }
         } else {
