@@ -7,16 +7,19 @@ const url = process.env.MONGODB_URI
 console.log('connecting to', url)
 
 mongoose
-.connect(url)
-.then(result => {
-    console.log('connected to MongoDB')
-})
-.catch(error => {
-    console.log('error connecting to MongoDB:', error)
-})
+    .connect(url)
+    .then(result => {
+        console.log('connected to MongoDB')
+    })
+    .catch(error => {
+        console.log('error connecting to MongoDB:', error)
+    })
 
 const personSchema = new mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+        minLength: 3
+    },
     number: String
 })
 

@@ -6,7 +6,6 @@ const PersonForm = ({
     newName, newNumber,
     setPersons, setNewName, setNewNumber, setNotificationMessage, setErrorMessage
 }) => {
-
     const submitHandler = (event) => {
         event.preventDefault()
         if (persons.map(person => person.name).includes(newName)) {
@@ -23,23 +22,29 @@ const PersonForm = ({
                         }, 5000)
                         setPersons(persons.filter(p => p.id !== updatePerson.id))
                     })
-
             }
         } else {
-        const newPerson = {
-            name: newName,
-            number: newNumber
-        }
-        personService
-            .create(newPerson)
-            .then(
-                returnedEntry => {
-                    setPersons(persons.concat(returnedEntry))
-                    setNotificationMessage(
-                        `Added ${newName}`
-                    )
+            const newPerson = {
+                name: newName,
+                number: newNumber
+            }
+
+            personService
+                .create(newPerson)
+                .then(
+                    returnedEntry => {
+                        setPersons(persons.concat(returnedEntry))
+                        setNotificationMessage(
+                            `Added ${newName}`
+                        )
+                        setTimeout(() => {
+                            setNotificationMessage(null)
+                        }, 5000)
+                    })
+                .catch(error => {
+                    setErrorMessage(error.response.data.error)
                     setTimeout(() => {
-                        setNotificationMessage(null)
+                        setErrorMessage(null)
                     }, 5000)
                 })
         }
