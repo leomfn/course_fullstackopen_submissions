@@ -16,7 +16,8 @@ const PersonForm = ({
                     .update(updatePerson.id, updatePerson)
                     .then(setPersons(persons.map((p => p.id !== updatePerson.id ? p : updatePerson))))
                     .catch(error => {
-                        setErrorMessage(`Information of ${newName} has already been removed from server`)
+                        // setErrorMessage(`Information of ${newName} has already been removed from server`)
+                        setErrorMessage(error.response.data.error)
                         setTimeout(() => {
                             setErrorMessage(null)
                         }, 5000)

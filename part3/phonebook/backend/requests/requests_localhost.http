@@ -16,7 +16,7 @@ Content-Type: application/json
 
 {
     "name": "New Name",
-    "number": "123-456"
+    "number": "123-45678"
 }
 
 ### 
@@ -25,7 +25,7 @@ Content-Type: application/json
 
 {
     "name": "Another New Name",
-    "number": "123-456-987"
+    "number": "123-456987"
 }
 
 ### 
