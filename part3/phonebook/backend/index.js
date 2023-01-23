@@ -106,12 +106,17 @@ app.put('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-// app.get('/info', (request, response) => {
+app.get('/info', (request, response, next) => {
 
-//   const responseHtml = `<p>Phonebook has info for ${persons.length} people</p>
-//     <p>${Date()}</p>`
-//   response.send(responseHtml)
-// })
+  Person.countDocuments()
+    .then(result => {
+      const responseHtml = `<p>Phonebook has info for ${result} people</p>
+        <p>${Date()}</p>`
+      response.send(responseHtml)
+    })
+    .catch(error => next(error))
+
+})
 
 // error handler middleware
 const errorHandler = (error, request, response, next) => {
