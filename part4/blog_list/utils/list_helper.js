@@ -28,8 +28,46 @@ const favoriteBlog = (blogs) => {
     })[0]
 }
 
+const mostBlogs = (blogs) => {
+
+  // step 1: create array with an object for each author and count = 0
+
+  const authorArray = blogs.reduce((arr, blog) => {
+    if (!arr.map(element => element.author).includes(blog.author)) {
+      console.log(`${blog.author} not found, added to array`)
+      arr.push({ author: blog.author })
+    }
+
+    return arr
+  }, [])
+
+  console.log(authorArray)
+
+  // step 2: add count to array from step 1, based on the occurences of each name in the blogs array
+
+  const authorCountArray = authorArray.map((author) => {
+    const result = blogs.filter((blog) => blog.author === author.author).length
+    return { author: author.author, blogs: result }
+  })
+
+  console.log(authorCountArray)
+
+  // step 3: find maximum count
+
+  const maxBlogs = authorCountArray.reduce((obj, entry) => {
+    return entry.blogs > obj.blogs
+      ? {author: entry.author, blogs: entry.blogs}
+      : obj
+  }, {blogs: 0})
+
+  console.log('maxBlogs', maxBlogs)
+
+  return maxBlogs
+}
+
 module.exports = {
   dummy,
   totalLikes,
-  favoriteBlog
+  favoriteBlog,
+  mostBlogs
 }
