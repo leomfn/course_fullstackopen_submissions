@@ -19,7 +19,7 @@ beforeEach(async () => {
 
 })
 
-test.only('correct number of notes are returned are returned as json', async () => {
+test('correct number of notes are returned are returned as json', async () => {
     await api
         .get('/api/blogs')
         .expect(200)
@@ -28,6 +28,13 @@ test.only('correct number of notes are returned are returned as json', async () 
     const response = await api.get('/api/blogs')
 
     expect(response.body).toHaveLength(helper.initialBlogs.length)
+})
+
+test.only('unique identifier ist named id', async () => {
+    const response = await api.get('/api/blogs')
+    
+    const identifierCheck = response.body.map(blog => blog.id)
+    identifierCheck.forEach(id => expect(id).toBeDefined())
 })
 
 afterAll(async () => {

@@ -7,6 +7,7 @@ const blogsRouter = require('./controllers/blogs')
 mongoose.set('strictQuery', false)
 
 const mongoUrl = config.MONGODB_URI
+
 mongoose
     .connect(mongoUrl)
     .then(() => console.log('connected to mongoDB'))
