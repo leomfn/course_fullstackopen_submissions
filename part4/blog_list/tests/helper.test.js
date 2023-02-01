@@ -107,8 +107,6 @@ describe('most blogs', () => {
   })
 })
 
-
-
 describe('most likes', () => {
 
   test('find author with the most likes, accumulated over all their blogs, out of array of blogs', () => {
