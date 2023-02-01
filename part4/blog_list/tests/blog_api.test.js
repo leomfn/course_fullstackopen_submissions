@@ -55,7 +55,7 @@ test('post new entry to database and check content', async () => {
     expect(blogsAtEnd.body).toHaveLength(helper.initialBlogs.length + 1)
 })
 
-test.only('missing likes property defaults to 0', async () => {
+test('missing likes property defaults to 0', async () => {
     const newBlog = {
         title: 'A new title',
         url: 'http://example.com/newblog',
@@ -70,6 +70,28 @@ test.only('missing likes property defaults to 0', async () => {
     console.log('id of new entry:', response.body.id)
 
     expect(response.body.likes).toBe(0)
+})
+
+test.only('status code 400 if title or url are missing', async () => {
+    const blogMissingUrl = {
+        title: 'A new title',
+        author: 'John Dorian'
+    }
+
+    const blogMissingTitle = {
+        url: 'http://example.com/newblog',
+        author: 'John Dorian'
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(blogMissingUrl)
+        .expect(400)
+
+    await api
+        .post('/api/blogs')
+        .send(blogMissingTitle)
+        .expect(400)
 })
 
 afterAll(async () => {

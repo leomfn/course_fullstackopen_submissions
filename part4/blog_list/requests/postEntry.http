@@ -7,3 +7,25 @@ Content-Type: application/json
     "url": "https://example.com/blog",
     "likes": 0
 }
+
+### send body without url field
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "A very interesting blog title",
+    "author": "John Doe",
+    "likes": 0
+}
+
+### send body without title field
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "author": "John Doe",
+    "url": "https://example.com/blog",
+    "likes": 0
+}
