@@ -30,11 +30,33 @@ test('correct number of notes are returned are returned as json', async () => {
     expect(response.body).toHaveLength(helper.initialBlogs.length)
 })
 
-test.only('unique identifier ist named id', async () => {
+test('unique identifier ist named id', async () => {
     const response = await api.get('/api/blogs')
-    
+
     const identifierCheck = response.body.map(blog => blog.id)
     identifierCheck.forEach(id => expect(id).toBeDefined())
+})
+
+test.only('post new entry to database and check content', async () => {
+    const newBlog = {
+        title: 'A new title',
+        url: 'http://example.com/newblog',
+        author: 'John Dorian',
+        likes: 42
+    }
+
+    // check status code
+    const response = await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+
+    // check if object is created correctly
+    expect(response.body).toMatchObject(newBlog)
+
+    // check if number of objects increased by one
+    const blogsAtEnd = await api.get('/api/blogs')
+    expect(blogsAtEnd.body).toHaveLength(helper.initialBlogs.length + 1)
 })
 
 afterAll(async () => {
