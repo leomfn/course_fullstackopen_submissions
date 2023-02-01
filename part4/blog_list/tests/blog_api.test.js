@@ -9,14 +9,10 @@ const Blog = require('../models/blog')
 
 beforeEach(async () => {
     await Blog.deleteMany({})
-    console.log('test database entries deleted')
-
     for (let blog of helper.initialBlogs) {
         let blogObject = new Blog(blog)
         await blogObject.save()
     }
-    console.log('initial entries saved to database')
-
 })
 
 test('correct number of notes are returned are returned as json', async () => {
@@ -37,7 +33,7 @@ test('unique identifier ist named id', async () => {
     identifierCheck.forEach(id => expect(id).toBeDefined())
 })
 
-test.only('post new entry to database and check content', async () => {
+test('post new entry to database and check content', async () => {
     const newBlog = {
         title: 'A new title',
         url: 'http://example.com/newblog',
@@ -57,6 +53,23 @@ test.only('post new entry to database and check content', async () => {
     // check if number of objects increased by one
     const blogsAtEnd = await api.get('/api/blogs')
     expect(blogsAtEnd.body).toHaveLength(helper.initialBlogs.length + 1)
+})
+
+test.only('missing likes property defaults to 0', async () => {
+    const newBlog = {
+        title: 'A new title',
+        url: 'http://example.com/newblog',
+        author: 'John Dorian'
+    }
+
+    const response = await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+
+    console.log('id of new entry:', response.body.id)
+
+    expect(response.body.likes).toBe(0)
 })
 
 afterAll(async () => {
