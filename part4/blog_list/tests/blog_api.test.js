@@ -67,8 +67,6 @@ test('missing likes property defaults to 0', async () => {
         .send(newBlog)
         .expect(201)
 
-    console.log('id of new entry:', response.body.id)
-
     expect(response.body.likes).toBe(0)
 })
 
@@ -95,7 +93,7 @@ test('status code 400 if title or url are missing', async () => {
 })
 
 describe('delete a blog', () => {
-    test.only('successfully delete existing id', async () => {
+    test('successfully delete existing id', async () => {
         const response = await api.get('/api/blogs')
         const allBlogs = response.body
         const firstId = allBlogs[0].id
@@ -103,7 +101,7 @@ describe('delete a blog', () => {
             .expect(204)
     })
 
-    test.only('status code 404 when trying to delete already deleted id', async () => {
+    test('status code 404 when trying to delete already deleted id', async () => {
         const response = await api.get('/api/blogs')
         const allBlogs = response.body
         const firstId = allBlogs[0].id
@@ -113,9 +111,40 @@ describe('delete a blog', () => {
             .expect(404)
     })
 
-    test.only('status code 400 when trying to delete invalid id', async () => {
+    test('status code 400 when trying to delete invalid id', async () => {
         const invalidId = 123
         await api.delete(`/api/blogs/${invalidId}`)
+            .expect(400)
+    })
+})
+
+describe('update a blog', () => {
+    test('update the likes count', async () => {
+        const response = await api.get('/api/blogs')
+        const firstBlog = response.body[0]
+        const blogId = firstBlog.id
+        const oldLikes = firstBlog.likes
+        const newLikes = oldLikes + 10
+
+        const updatedBlog = await api
+            .put(`/api/blogs/${blogId}`)
+            .send({ likes: newLikes })
+            .expect(200)
+        
+        // compare objects
+        firstBlogUpdated = { ...firstBlog }
+        firstBlogUpdated.likes = newLikes
+
+        expect(updatedBlog.body).toMatchObject(firstBlogUpdated)
+    })
+
+    test('status 400 when updating a non existing field', async () => {
+        const response = await api.get('/api/blogs')
+        const firstBlog = response.body[0]
+        const blogId = firstBlog.id
+        await api
+            .put(`/api/blogs/${blogId}`)
+            .send({ nonexisting: 'test' })
             .expect(400)
     })
 })
