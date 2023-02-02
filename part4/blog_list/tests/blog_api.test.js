@@ -72,7 +72,7 @@ test('missing likes property defaults to 0', async () => {
     expect(response.body.likes).toBe(0)
 })
 
-test.only('status code 400 if title or url are missing', async () => {
+test('status code 400 if title or url are missing', async () => {
     const blogMissingUrl = {
         title: 'A new title',
         author: 'John Dorian'
@@ -92,6 +92,32 @@ test.only('status code 400 if title or url are missing', async () => {
         .post('/api/blogs')
         .send(blogMissingTitle)
         .expect(400)
+})
+
+describe('delete a blog', () => {
+    test.only('successfully delete existing id', async () => {
+        const response = await api.get('/api/blogs')
+        const allBlogs = response.body
+        const firstId = allBlogs[0].id
+        await api.delete(`/api/blogs/${firstId}`)
+            .expect(204)
+    })
+
+    test.only('status code 404 when trying to delete already deleted id', async () => {
+        const response = await api.get('/api/blogs')
+        const allBlogs = response.body
+        const firstId = allBlogs[0].id
+        await api.delete(`/api/blogs/${firstId}`)
+            .expect(204)
+        await api.delete(`/api/blogs/${firstId}`)
+            .expect(404)
+    })
+
+    test.only('status code 400 when trying to delete invalid id', async () => {
+        const invalidId = 123
+        await api.delete(`/api/blogs/${invalidId}`)
+            .expect(400)
+    })
 })
 
 afterAll(async () => {

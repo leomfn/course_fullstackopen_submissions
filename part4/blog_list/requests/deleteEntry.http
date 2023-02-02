@@ -1,0 +1,5 @@
+### existing id (replace by current id in database)
+DELETE http://localhost:3003/api/blogs/63db03fd755dcc7f495bf597
+
+### non-existing id
+DELETE http://localhost:3003/api/blogs/123
