@@ -7,6 +7,16 @@ Content-Type: application/json
     "password": "test123"
 }
 
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "tokenboy",
+    "name": "Token Bearer",
+    "password": "tokenpw"
+}
+
 ### username too short
 POST http://localhost:3003/api/users
 Content-Type: application/json
