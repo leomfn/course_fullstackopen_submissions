@@ -43,6 +43,23 @@ blogsRouter.post('/', async (request, response) => {
 
 blogsRouter.delete('/:id', async (request, response) => {
     try {
+        const decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+        // console.log('decodedToken.id:', decodedToken.id)
+        // console.log('blog id from request:', request.params.id)
+        const blog = await Blog.findById(request.params.id)
+        // console.log('blog from request id', blog)
+        // console.log('user id of blog owner', blog.user.toString())
+
+
+        if (!decodedToken.id) {
+            return response.status(401).json({error: 'token invalid'})
+        }
+
+        if (decodedToken.id!==blog.user.toString()) {
+            return response.status(401).json({error: 'item is owned by another user'})
+        }
+
         const result = await Blog.findByIdAndDelete(request.params.id)
         result
             ? response.status(204).end()

@@ -1,5 +1,14 @@
 ### existing id (replace by current id in database)
 DELETE http://localhost:3003/api/blogs/63db03fd755dcc7f495bf597
 
+### delete with user token
+DELETE http://localhost:3003/api/blogs/63e12aeb5d01a37321f62793
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRva2VuYm95IiwiaWQiOiI2M2UxMjIwY2M5YWRjN2IyMGZhMzlmYzkiLCJpYXQiOjE2NzU2OTg3MTN9.hKOGWb3NKbAFJE67YDq2mtLGstgS5F7RQnColwXiR-M
+
+### try to delete a foreign blog
+DELETE http://localhost:3003/api/blogs/63e11bc7647060f9860fb00a
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRva2VuYm95IiwiaWQiOiI2M2UxMjIwY2M5YWRjN2IyMGZhMzlmYzkiLCJpYXQiOjE2NzU2OTg3MTN9.hKOGWb3NKbAFJE67YDq2mtLGstgS5F7RQnColwXiR-M
+
+
 ### non-existing id
 DELETE http://localhost:3003/api/blogs/123
