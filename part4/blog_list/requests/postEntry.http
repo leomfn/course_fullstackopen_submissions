@@ -8,6 +8,17 @@ Content-Type: application/json
     "likes": 0
 }
 
+### send body without author field
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Blog without author",
+    "url": "https://example.com/blog",
+    "likes": 0
+}
+
 ### send body without url field
 
 POST http://localhost:3003/api/blogs
