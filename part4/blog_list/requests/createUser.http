@@ -6,3 +6,32 @@ Content-Type: application/json
     "name": "Max Mustermann",
     "password": "test123"
 }
+
+### username too short
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "ab",
+    "name": "Max Mustermann",
+    "password": "test123"
+}
+
+### password too short
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "Max Mustermann",
+    "name": "Max Mustermann",
+    "password": "12"
+}
+
+### password missing
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "Max Mustermann",
+    "name": "Max Mustermann"
+}

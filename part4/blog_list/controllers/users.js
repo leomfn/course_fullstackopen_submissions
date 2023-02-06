@@ -10,18 +10,32 @@ usersRouter.get('/', async (request, response) => {
 usersRouter.post('/', async (request, response) => {
     const { username, name, password } = request.body
 
-    const saltRounds = 10
-    const passwordHash = await bcrypt.hash(password, saltRounds)
+    try {
+        if (!password) {
+            console.error('user not created, password missing')
+            response.status(400).json({ error: 'password missing' })
+        }
+        else if (password.length <= 3) {
+            console.error('user not created, password too short')
+            response.status(400).json({ error: 'password too short' })
+        } else {
+            const saltRounds = 10
+            const passwordHash = await bcrypt.hash(password, saltRounds)
 
-    const user = new User({
-        username,
-        name,
-        passwordHash
-    })
+            const user = new User({
+                username,
+                name,
+                passwordHash
+            })
 
-    const savedUser = await user.save()
+            const savedUser = await user.save()
 
-    response.status(201).json(savedUser)
+            response.status(201).json(savedUser)
+        }
+    } catch (error) {
+        console.error(error.message)
+        response.status(400).json({ error: error.message })
+    }
 })
 
 module.exports = usersRouter

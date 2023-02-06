@@ -6,6 +6,7 @@ const helper = require('./test_helper')
 const api = supertest(app)
 
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 beforeEach(async () => {
     await Blog.deleteMany({})
@@ -130,7 +131,7 @@ describe('update a blog', () => {
             .put(`/api/blogs/${blogId}`)
             .send({ likes: newLikes })
             .expect(200)
-        
+
         // compare objects
         firstBlogUpdated = { ...firstBlog }
         firstBlogUpdated.likes = newLikes
@@ -146,6 +147,58 @@ describe('update a blog', () => {
             .put(`/api/blogs/${blogId}`)
             .send({ nonexisting: 'test' })
             .expect(400)
+    })
+})
+
+describe('when user is created', () => {
+    beforeEach(async () => {
+        await User.deleteMany({})
+    })
+
+    test('successfully create user', async () => {
+        const newUser = {
+            username: 'maxmustermann',
+            name: 'Max Mustermann',
+            password: 'badpassword'
+        }
+
+        await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+    })
+
+    test('username too short', async () => {
+        const newUser = {
+            username: '12',
+            name: 'Max Mustermann',
+            password: 'badpassword'
+        }
+
+        const result = await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+
+        expect(result.body.error).toContain('shorter than the minimum allowed length')
+    })
+
+    test('password too short', async () => {
+        const newUser = {
+            username: 'maxmustermann',
+            name: 'Max Mustermann',
+            password: '12'
+        }
+
+        const result = await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+
+        expect(result.body.error).toContain('password too short')
     })
 })
 
