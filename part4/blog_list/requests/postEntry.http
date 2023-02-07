@@ -20,6 +20,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRva
     "likes": 99
 }
 
+### post blog without user token
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "A blog post without authorization/token",
+    "author": "Not A. Token",
+    "url": "https://example.com/blog",
+    "likes": 0
+}
+
 
 ### send body without author field
 

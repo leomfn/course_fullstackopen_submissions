@@ -35,6 +35,50 @@ test('unique identifier ist named id', async () => {
 })
 
 test('post new entry to database and check content', async () => {
+    // create user
+    const newUser = {
+        username: 'maxmustermann',
+        name: 'Max Mustermann',
+        password: 'badpassword'
+    }
+
+    await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(201)
+
+    // login and get token
+    const loginResponse = await api
+        .post('/api/login')
+        .send({ username: newUser.username, password: newUser.password })
+
+    const authorization = `Bearer ${loginResponse.body.token}`
+
+    // create new blog
+    const newBlog = {
+        title: 'A new title',
+        url: 'http://example.com/newblog',
+        author: 'John Dorian',
+        likes: 42
+    }
+
+    // check status code
+    const response = await api
+        .post('/api/blogs')
+        .set('Authorization', authorization)
+        .send(newBlog)
+        .expect(201)
+
+    // check if object is created correctly
+    expect(response.body).toMatchObject(newBlog)
+
+    // check if number of objects increased by one
+    const blogsAtEnd = await api.get('/api/blogs')
+    expect(blogsAtEnd.body).toHaveLength(helper.initialBlogs.length + 1)
+})
+
+test.only('respond with status 401 unauthorized, if no token is provided', async () => {
+    // create new blog
     const newBlog = {
         title: 'A new title',
         url: 'http://example.com/newblog',
@@ -46,14 +90,7 @@ test('post new entry to database and check content', async () => {
     const response = await api
         .post('/api/blogs')
         .send(newBlog)
-        .expect(201)
-
-    // check if object is created correctly
-    expect(response.body).toMatchObject(newBlog)
-
-    // check if number of objects increased by one
-    const blogsAtEnd = await api.get('/api/blogs')
-    expect(blogsAtEnd.body).toHaveLength(helper.initialBlogs.length + 1)
+        .expect(401)
 })
 
 test('missing likes property defaults to 0', async () => {
