@@ -2,8 +2,8 @@
 DELETE http://localhost:3003/api/blogs/63db03fd755dcc7f495bf597
 
 ### delete with user token
-DELETE http://localhost:3003/api/blogs/63e12aeb5d01a37321f62793
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRva2VuYm95IiwiaWQiOiI2M2UxMjIwY2M5YWRjN2IyMGZhMzlmYzkiLCJpYXQiOjE2NzU2OTg3MTN9.hKOGWb3NKbAFJE67YDq2mtLGstgS5F7RQnColwXiR-M
+DELETE http://localhost:3003/api/blogs/63e2365139e11ed83e986579
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRva2VuYm95IiwiaWQiOiI2M2UyMzYzODM5ZTExZWQ4M2U5ODY1NzUiLCJpYXQiOjE2NzU3Njk0MDZ9.WiMwd1Qy5KvMA9n6yiDS6XCp7DNNmQd-rBMG6FAJABI
 
 ### try to delete a foreign blog
 DELETE http://localhost:3003/api/blogs/63e11bc7647060f9860fb00a

@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken')
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
-const User = require('../models/user');
+const User = require('../models/user')
+const middleware = require('../utils/middleware')
 
 blogsRouter.get('/', (request, response) => {
     Blog
@@ -11,17 +12,17 @@ blogsRouter.get('/', (request, response) => {
         })
 })
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
     try {
         const body = request.body
 
         const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
         if (!decodedToken.id) {
-            return response.status(401).json({error: 'token invalid'})
+            return response.status(401).json({ error: 'token invalid' })
         }
 
-        const user = await User.findById(decodedToken.id)
+        const user = request.user
 
         const blog = new Blog({
             title: body.title,
@@ -41,29 +42,29 @@ blogsRouter.post('/', async (request, response) => {
     }
 })
 
-blogsRouter.delete('/:id', async (request, response) => {
+blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) => {
     try {
         const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
-        // console.log('decodedToken.id:', decodedToken.id)
-        // console.log('blog id from request:', request.params.id)
         const blog = await Blog.findById(request.params.id)
-        // console.log('blog from request id', blog)
-        // console.log('user id of blog owner', blog.user.toString())
-
 
         if (!decodedToken.id) {
-            return response.status(401).json({error: 'token invalid'})
+            return response.status(401).json({ error: 'token invalid' })
         }
 
-        if (decodedToken.id!==blog.user.toString()) {
-            return response.status(401).json({error: 'item is owned by another user'})
+        if (decodedToken.id !== blog.user.toString()) {
+            return response.status(401).json({ error: 'item is owned by another user' })
         }
 
         const result = await Blog.findByIdAndDelete(request.params.id)
+
         result
             ? response.status(204).end()
             : response.status(404).end()
+
+        // remove blog from user document in users collection
+        const user = request.user
+        user.blogs = user.blogs.filter(b => b._id.toString() !== request.params.id)
     } catch (exception) {
         response.status(400).end()
     }
