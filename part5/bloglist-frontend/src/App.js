@@ -10,6 +10,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState('')
+  const [statusMessage, setStatusMessage] = useState('')
 
   // effect hooks
   useEffect(() => {
@@ -92,11 +93,14 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <div>
+        {statusMessage}
+      </div>
       <p>
         {user.name} logged in
         <button onClick={handleLogout}>logout</button>
       </p>
-      <CreateBlog token={`Bearer ${user.token}`} blogs={blogs} setBlogs={setBlogs} />
+      <CreateBlog token={`Bearer ${user.token}`} blogs={blogs} setBlogs={setBlogs} setStatusMessage={setStatusMessage} />
       <div>
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />

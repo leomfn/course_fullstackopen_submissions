@@ -1,7 +1,7 @@
 import { useState } from "react"
 import blogService from '../services/blogs'
 
-const CreateBlog = ({ token, setBlogs }) => {
+const CreateBlog = ({ token, setBlogs, setStatusMessage }) => {
   // state
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -25,6 +25,9 @@ const CreateBlog = ({ token, setBlogs }) => {
     // alternatively, just add the response to blogs array (also add blogs to function parameters):
     // const newBlogs = blogs.concat({title, author, url})
     // setBlogs(newBlogs)
+
+    setStatusMessage(`a new blog ${title} by ${author} added`)
+    setTimeout(() => setStatusMessage(''), 5000)
 
     setTitle('')
     setAuthor('')
