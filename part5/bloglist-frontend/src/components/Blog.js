@@ -1,20 +1,29 @@
 import { useState } from "react"
+import blogService from '../services/blogs'
 
-const BlogDetails = ({ blog }) => {
+const BlogDetails = ({ blog, token, setBlogs }) => {
   const likes = blog.likes ? blog.likes : 0
+
+  const handleLikeBlog = async () => {
+    await blogService.likeBlog(blog, token)
+
+    const blogs = await blogService.getAll()
+    setBlogs(blogs)
+  }
+
   return (
     <div>
       <div>{blog.url}</div>
       <div>
         likes {likes}
-        <button>like</button>
+        <button onClick={handleLikeBlog}>like</button>
       </div>
       <div>{blog.user.name}</div>
     </div>
   )
 }
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, token, setBlogs }) => {
 
   const blogStyle = {
     paddingTop: 10,
@@ -36,7 +45,12 @@ const Blog = ({ blog }) => {
       <button onClick={handleShowDetails}>
         {showBlog ? 'hide' : 'view'}
       </button>
-      {showBlog && <BlogDetails blog={blog} />}
+      {showBlog &&
+        <BlogDetails
+          blog={blog}
+          token={token}
+          setBlogs={setBlogs}
+        />}
     </div>
   )
 }
