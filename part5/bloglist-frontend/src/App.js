@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import CreateBlog from './components/CreateBlog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -95,9 +96,12 @@ const App = () => {
         {user.name} logged in
         <button onClick={handleLogout}>logout</button>
       </p>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
+      <CreateBlog token={`Bearer ${user.token}`} blogs={blogs} setBlogs={setBlogs} />
+      <div>
+        {blogs.map(blog =>
+          <Blog key={blog.id} blog={blog} />
+        )}
+      </div>
     </div>
   )
 }
