@@ -20,7 +20,7 @@ const BlogDetails = ({ blog, token, setBlogs, user }) => {
     )
 
     deleteConfirmation && await blogService.deleteBlog(blog, token)
-    
+
     const blogs = await blogService.getAll()
     setBlogs(blogs)
   }
