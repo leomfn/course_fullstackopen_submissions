@@ -123,6 +123,7 @@ const App = () => {
               blog={blog}
               token={`Bearer ${user.token}`}
               setBlogs={setBlogs}
+              user={user}
             />
           )}
       </div>

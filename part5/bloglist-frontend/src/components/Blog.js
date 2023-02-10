@@ -1,12 +1,26 @@
 import { useState } from "react"
 import blogService from '../services/blogs'
 
-const BlogDetails = ({ blog, token, setBlogs }) => {
+const BlogDetails = ({ blog, token, setBlogs, user }) => {
   const likes = blog.likes ? blog.likes : 0
+  const ownerActive = blog.user.username === user.username
+    ? true
+    : false
 
   const handleLikeBlog = async () => {
     await blogService.likeBlog(blog, token)
 
+    const blogs = await blogService.getAll()
+    setBlogs(blogs)
+  }
+
+  const handleDeleteBlog = async () => {
+    const deleteConfirmation = window.confirm(
+      `Remove blog ... by ...`
+    )
+
+    deleteConfirmation && await blogService.deleteBlog(blog, token)
+    
     const blogs = await blogService.getAll()
     setBlogs(blogs)
   }
@@ -19,11 +33,19 @@ const BlogDetails = ({ blog, token, setBlogs }) => {
         <button onClick={handleLikeBlog}>like</button>
       </div>
       <div>{blog.user.name}</div>
+      {ownerActive &&
+        <button
+          style={{ color: 'white', background: 'red' }}
+          onClick={handleDeleteBlog}
+        >
+          remove
+        </button>
+      }
     </div>
   )
 }
 
-const Blog = ({ blog, token, setBlogs }) => {
+const Blog = ({ blog, token, setBlogs, user }) => {
 
   const blogStyle = {
     paddingTop: 10,
@@ -50,6 +72,7 @@ const Blog = ({ blog, token, setBlogs }) => {
           blog={blog}
           token={token}
           setBlogs={setBlogs}
+          user={user}
         />}
     </div>
   )
