@@ -80,4 +80,11 @@ const Blog = ({ blog, token, setBlogs, user }) => {
   )
 }
 
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  token: PropTypes.string.isRequired,
+  setBlogs: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
+}
+
 export default Blog
