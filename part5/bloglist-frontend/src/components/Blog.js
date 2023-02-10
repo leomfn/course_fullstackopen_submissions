@@ -1,5 +1,7 @@
-import { useState } from "react"
+import { useState } from 'react'
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
+
 
 const BlogDetails = ({ blog, token, setBlogs, user }) => {
   const likes = blog.likes ? blog.likes : 0
@@ -16,7 +18,7 @@ const BlogDetails = ({ blog, token, setBlogs, user }) => {
 
   const handleDeleteBlog = async () => {
     const deleteConfirmation = window.confirm(
-      `Remove blog ... by ...`
+      `Remove blog ${blog.title} by ${blog.title}`
     )
 
     deleteConfirmation && await blogService.deleteBlog(blog, token)
