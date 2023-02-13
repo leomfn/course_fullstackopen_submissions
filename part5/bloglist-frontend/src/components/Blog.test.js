@@ -4,6 +4,10 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
+// mock blogService module
+import blogService from '../services/blogs'
+jest.mock('../services/blogs')
+
 describe('<Blog /> component', () => {
   const blog = {
     title: 'Test title',
@@ -52,7 +56,7 @@ describe('<Blog /> component', () => {
     )
   })
 
-  test.only('URL and number of likes are shown when button is clicked', async () => {
+  test('URL and number of likes are shown when button is clicked', async () => {
     const user = userEvent.setup()
     const button = screen.getByText('view')
     await user.click(button)
@@ -65,5 +69,18 @@ describe('<Blog /> component', () => {
     expect(div).toHaveTextContent(
       blog.likes
     )
+  })
+
+  test.only('Event handler for like button is called twice when button is clicked twice', async () => {
+    const user = userEvent.setup()
+    const button = screen.getByText('view')
+    await user.click(button)
+
+    const likeButton = screen.getByText('like')
+
+    await user.click(likeButton)
+    await user.click(likeButton)
+
+    expect(blogService.likeBlog).toBeCalledTimes(2)
   })
 })
