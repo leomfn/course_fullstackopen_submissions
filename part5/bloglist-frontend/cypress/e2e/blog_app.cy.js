@@ -63,7 +63,7 @@ describe('Blog app', function () {
         })
     })
 
-    it.only('A blog can be created', function () {
+    it('A blog can be created', function () {
       const blog = {
         title: 'Test blog title',
         author: 'Blog Author',
@@ -77,6 +77,31 @@ describe('Blog app', function () {
       cy.contains(/a new blog.*added/)
       cy.contains(`${blog.title} ${blog.author}`)
       cy.contains('view')
+    })
+
+    describe('User created a blog', () => {
+      beforeEach(() => {
+        const blog = {
+          title: 'Test blog title',
+          author: 'Blog Author',
+          url: 'https://example.com/testblog'
+        }
+        cy.request({
+          method: 'POST',
+          url: 'http://localhost:3003/api/blogs/',
+          body: blog,
+          headers: {
+            'Authorization': `Bearer ${JSON.parse(localStorage.getItem('currentUser')).token}`
+          }
+        })
+        cy.visit('http://localhost:3000')
+      })
+      it.only('Users can like a blog', () => {
+        cy.contains('view').click()
+        cy.contains('likes 0')
+        cy.get('button').contains('like').click()
+        cy.contains('likes 1')
+      })
     })
   })
 })
