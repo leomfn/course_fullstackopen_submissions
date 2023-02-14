@@ -42,16 +42,41 @@ describe('Blog app', function () {
 
       cy.contains('wrong username or password')
         .should('have.css', 'background-color', 'rgb(255, 0, 0)')
-      // cy.contains('logout')
-      // cy.contains('blogs')
-      // cy.contains('new note')
+      cy.contains('logout').should('not.exist')
+      cy.contains('blogs').should('not.exist')
+      cy.contains('new note').should('not.exist')
     })
   })
 
+  describe('When logged in', function () {
+    beforeEach(function () {
+      cy.request(
+        'POST',
+        'http://localhost:3003/api/login/',
+        { username: 'max_mustermann', password: 'testpassword' })
+        .then(response => {
+          localStorage.setItem(
+            'currentUser',
+            JSON.stringify(response.body)
+          )
+          cy.visit('http://localhost:3000')
+        })
+    })
 
-  // describe('when logged in'), () => {
-  //   beforeEach(() => {
-
-  //   })
-  // }
+    it.only('A blog can be created', function () {
+      const blog = {
+        title: 'Test blog title',
+        author: 'Blog Author',
+        url: 'https://example.com/testblog'
+      }
+      cy.contains('new note').click()
+      cy.get('input[name="Title"]').type(blog.title)
+      cy.get('input[name="Author"]').type(blog.author)
+      cy.get('input[name="Url"]').type(blog.url)
+      cy.get('button[type="submit"]').click()
+      cy.contains(/a new blog.*added/)
+      cy.contains(`${blog.title} ${blog.author}`)
+      cy.contains('view')
+    })
+  })
 })
