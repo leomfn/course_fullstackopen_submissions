@@ -96,11 +96,18 @@ describe('Blog app', function () {
         })
         cy.visit('http://localhost:3000')
       })
-      it.only('Users can like a blog', () => {
+
+      it('Users can like a blog', () => {
         cy.contains('view').click()
         cy.contains('likes 0')
         cy.get('button').contains('like').click()
         cy.contains('likes 1')
+      })
+
+      it.only('User who created a blog can delete it', () => {
+        cy.contains('view').click()
+        cy.contains('remove').click()
+        cy.contains('remove').should('not.exist')
       })
     })
   })
