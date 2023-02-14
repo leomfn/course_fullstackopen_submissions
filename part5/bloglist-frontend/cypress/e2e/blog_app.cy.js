@@ -1,12 +1,20 @@
 describe('Blog app', function () {
   beforeEach(function () {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
-    const user = {
-      name: 'Max Mustermann',
-      username: 'max_mustermann',
-      password: 'testpassword'
-    }
-    cy.request('POST', 'http://localhost:3003/api/users/', user)
+    const users = [
+      {
+        name: 'Max Mustermann',
+        username: 'max_mustermann',
+        password: 'testpassword'
+      },
+      {
+        name: 'John Doe',
+        username: 'john_doe',
+        password: 'anotherpassword'
+      }
+    ]
+
+    users.forEach(user => cy.request('POST', 'http://localhost:3003/api/users/', user))
 
     cy.visit('http://localhost:3000')
   })
@@ -102,11 +110,33 @@ describe('Blog app', function () {
         cy.contains('likes 0')
         cy.get('button').contains('like').click()
         cy.contains('likes 1')
+        cy.contains('likes 0').should('not.exist')
       })
 
-      it.only('User who created a blog can delete it', () => {
+      it('User who created a blog can delete it', () => {
         cy.contains('view').click()
         cy.contains('remove').click()
+        cy.contains('remove').should('not.exist')
+      })
+
+      it.only('User who did NOT create a blog cannot see the delete button', () => {
+        cy.contains('logout').click()
+
+        // login as different user
+        cy.request(
+          'POST',
+          'http://localhost:3003/api/login/',
+          { username: 'john_doe', password: 'anotherpassword' })
+          .then(response => {
+            localStorage.setItem(
+              'currentUser',
+              JSON.stringify(response.body)
+            )
+            cy.visit('http://localhost:3000')
+          })
+
+        // continue with test
+        cy.contains('view').click()
         cy.contains('remove').should('not.exist')
       })
     })
