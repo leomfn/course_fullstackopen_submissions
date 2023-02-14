@@ -71,7 +71,7 @@ describe('<Blog /> component', () => {
     )
   })
 
-  test.only('Event handler for like button is called twice when button is clicked twice', async () => {
+  test('Event handler for like button is called twice when button is clicked twice', async () => {
     const user = userEvent.setup()
     const button = screen.getByText('view')
     await user.click(button)

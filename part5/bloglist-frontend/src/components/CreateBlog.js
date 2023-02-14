@@ -39,7 +39,7 @@ const CreateBlog = ({ token, setBlogs, setStatusMessage, blogFormRef }) => {
   return (
     <div>
       <h2>create new</h2>
-      <form onSubmit={handleCreateBlog}>
+      <form onSubmit={handleCreateBlog} className='newBlogForm'>
         <div>
           title:
           <input
@@ -63,7 +63,7 @@ const CreateBlog = ({ token, setBlogs, setStatusMessage, blogFormRef }) => {
           <input
             type="text"
             value={url}
-            name="URL"
+            name="Url"
             onChange={({ target }) => setUrl(target.value)}
           />
         </div>
