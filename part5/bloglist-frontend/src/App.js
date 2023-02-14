@@ -66,9 +66,16 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
-        <div>
+        {errorMessage &&
+        <div style={{
+          backgroundColor: 'red',
+          color: 'white',
+          margin: '10px 0',
+          padding: '10px'
+        }}>
           {errorMessage}
         </div>
+        }
         <form onSubmit={handleLogin}>
           <div>
             Username:
