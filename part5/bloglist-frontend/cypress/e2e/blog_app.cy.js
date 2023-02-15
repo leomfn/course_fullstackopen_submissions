@@ -119,7 +119,7 @@ describe('Blog app', function () {
         cy.contains('remove').should('not.exist')
       })
 
-      it.only('User who did NOT create a blog cannot see the delete button', () => {
+      it('User who did NOT create a blog cannot see the delete button', () => {
         cy.contains('logout').click()
 
         // login as different user
@@ -138,6 +138,54 @@ describe('Blog app', function () {
         // continue with test
         cy.contains('view').click()
         cy.contains('remove').should('not.exist')
+      })
+
+      it('Blogs are ordered by like count', () => {
+        // add more Blogs
+        const blogs = [
+          { title: 'A random Blog', author: 'Random Author', url: 'http://example.com/randomblog', likes: 5 },
+          { title: 'A cool Blog', author: 'Cool Author', url: 'http://example.com/coolblog', likes: 100 },
+          { title: 'A boring Blog', author: 'Boring Author', url: 'http://example.com/boringblog', likes: 1 },
+          { title: 'A super Blog', author: 'Super Author', url: 'http://example.com/superblog', likes: 9000 },
+        ]
+
+        blogs.forEach(blog =>
+          cy.request({
+            method: 'POST',
+            url: 'http://localhost:3003/api/blogs/',
+            body: blog,
+            headers: {
+              'Authorization': `Bearer ${JSON.parse(localStorage.getItem('currentUser')).token}`
+            }
+          })
+        )
+
+        cy.visit('http://localhost:3000')
+
+        // continue with test
+
+        cy.contains('view')
+
+        cy.get('button').each($el => {
+          if ($el.text() === 'view') {
+            $el.click()
+          }
+        })
+
+        cy.contains('like')
+
+        const likes = []
+
+        // extract numbers from each blog
+        cy.get('div').each($el => {
+          if ($el.text().startsWith('likes')) {
+            likes.push(Number($el.text().match(/\d+/)[0]))
+          }
+        }).then(() => {
+          for (let i = 0; i < (likes.length - 1); i++) {
+            expect(likes[i] >= likes[i + 1]).to.be.true
+          }
+        })
       })
     })
   })
