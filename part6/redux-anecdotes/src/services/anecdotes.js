@@ -4,7 +4,6 @@ const baseUrl = 'http://localhost:3001/anecdotes'
 
 const getAll = async () => {
   const reponse = await axios.get(baseUrl)
-  console.log('recieved response from anecdotes service function getAll')
   return reponse.data
 }
 
@@ -14,5 +13,11 @@ const createNew = async (content) => {
   return response.data
 }
 
+const addVote = async (anecdote) => {
+  const updatedAnecdote = { ...anecdote, votes: anecdote.votes + 1 }
+  const response = await axios.put(`${baseUrl}/${anecdote.id}`, updatedAnecdote)
+  return response.data
+}
+
 // eslint-disable-next-line
-export default { getAll, createNew }
+export default { getAll, createNew, addVote }
