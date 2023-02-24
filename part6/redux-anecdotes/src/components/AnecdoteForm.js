@@ -1,10 +1,10 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createAnecdote } from '../reducers/anecdoteReducer'
-import { setNotification, removeNotification } from "../reducers/notificationReducer"
+import { setNotification } from "../reducers/notificationReducer"
 
 const AnecdoteForm = () => {
-  const [timeoutId, setTimeoutId] = useState(null)
+  // const [timeoutId, setTimeoutId] = useState(null)
 
   const dispatch = useDispatch()
 
@@ -16,13 +16,13 @@ const AnecdoteForm = () => {
 
     dispatch(createAnecdote(content))
 
-    dispatch(setNotification(`created new anecdote '${content}'`))
-    clearTimeout(timeoutId)
-    setTimeoutId(
-      setTimeout(() => {
-        dispatch(removeNotification())
-      }, 5000)
-    )
+    dispatch(setNotification(`created new anecdote '${content}'`, 5))
+    // clearTimeout(timeoutId)
+    // setTimeoutId(
+    //   setTimeout(() => {
+    //     dispatch(removeNotification())
+    //   }, 5000)
+    // )
   }
 
   return (
